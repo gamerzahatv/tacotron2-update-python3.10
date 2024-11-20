@@ -114,7 +114,7 @@ def create_hparams(hparams_string=None, verbose=False):
         "seed":1234,
         "dynamic_loss_scaling":True,
         "fp16_run":False,
-        "distributed_run":True,
+        "distributed_run":False, #for muti gpu
         "dist_backend":"nccl",
         "dist_url":"tcp://localhost:14897",
         "cudnn_enabled":True,
