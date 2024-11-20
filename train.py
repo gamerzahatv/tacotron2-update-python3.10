@@ -39,9 +39,7 @@ def init_distributed(hparams, n_gpus, rank, group_name):
 
         device = torch.device("cuda")  # Use the first available GPU
         print(f"Using GPU: {torch.cuda.get_device_name(0)}")
-    else:
-        device = torch.device("cpu")
-        print("Using CPU")
+
     
     print("Initializing Distributed")
 
@@ -81,8 +79,8 @@ def prepare_directories_and_logger(output_directory, log_directory, rank):
 
 def load_model(hparams):
      #.device("cpu")
-    #model = Tacotron2(hparams).cuda()
-    model = Tacotron2(hparams).to("cpu")
+    model = Tacotron2(hparams).cuda()
+    #model = Tacotron2(hparams).to("cpu")
     if hparams.fp16_run:
         model.decoder.attention_layer.score_mask_value = finfo('float16').min
 
@@ -145,9 +143,9 @@ def validate(model, criterion, valset, iteration, batch_size, n_gpus,
     model.eval()
     with torch.no_grad():
         val_sampler = DistributedSampler(valset) if distributed_run else None
-        val_loader = DataLoader(valset, sampler=val_sampler, num_workers=1,
-                                shuffle=False, batch_size=batch_size,
-                                pin_memory=False, collate_fn=collate_fn)
+        val_loader = DataLoader(valset, sampler=val_sampler, num_workers=4,
+                                shuffle=True, batch_size=batch_size,
+                                pin_memory=True, collate_fn=collate_fn)
 
         val_loss = 0.0
         for i, batch in enumerate(val_loader):
