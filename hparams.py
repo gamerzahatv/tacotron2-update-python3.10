@@ -114,11 +114,11 @@ def create_hparams(hparams_string=None, verbose=False):
         "seed":1234,
         "dynamic_loss_scaling":True,
         "fp16_run":False,
-        "distributed_run":False,
+        "distributed_run":True,
         "dist_backend":"nccl",
         "dist_url":"tcp://localhost:14897",
-        "cudnn_enabled":False,
-        "cudnn_benchmark":False,
+        "cudnn_enabled":True,
+        "cudnn_benchmark":True,
         "ignore_layers":['embedding.weight'],
         # freeze_layers":['encoder'], # Freeze tacotron2 layer for finetuning
 
